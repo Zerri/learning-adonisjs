@@ -40,18 +40,16 @@ jobs:
 
   deploy:
     env:
-      TZ: UTC
-      PORT: 3333
-      HOST: localhost
-      LOG_LEVEL: info
-      APP_KEY: YIcNzpyU1CCGAdOIkyA852pnBjMBh0Zi
-      NODE_ENV: development
-      DB_HOST: 127.0.0.1
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_DATABASE: app
-      SESSION_DRIVER: cookie
+      NODE_ENV: production
+      APP_KEY: ${{ vars.APP_KEY }}
+      HOST: ${{ vars.HOST }}
+      LOG_LEVEL: ${{ vars.LOG_LEVEL }}
+      DB_HOST: ${{ vars.DB_HOST }}
+      DB_PORT: ${{ vars.DB_PORT }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PASSWORD: ${{ vars.DB_PASSWORD }}
+      DB_DATABASE: ${{ vars.DB_DATABASE }}
+      SESSION_DRIVER: ${{ vars.SESSION_DRIVER }}
       #APP_KEY: ${{ vars.APP_KEY }}
       #HOST: ${{ vars.HOST }}
       #MONGO_URL: ${{ secrets.MONGO_URL }}
