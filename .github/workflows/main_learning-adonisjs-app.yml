@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Required for actions/checkout
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -45,8 +45,8 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # Required for requesting the JWT
-      contents: read # Required for actions/checkout
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
@@ -56,50 +56,13 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
-      # 📌 Debug: Controlla se il file .env viene creato correttamente
-      - name: Check .env file
-        run: |
-          ls -la
-          cat .env || echo ".env file is missing!"
-
-      # 📌 Set environment variables in .env
-      - name: Set environment variables
-        run: |
-          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
-          echo "HOST=${{ vars.HOST }}" >> .env
-          echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PORT=${{ vars.DB_PORT }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "SESSION_DRIVER=${{ vars.SESSION_DRIVER }}" >> .env
-
-      # 📌 Debug: Verifica che le variabili siano state inserite correttamente
-      - name: Debug environment variables
-        run: cat .env
-
-      # 📌 Passa le variabili d'ambiente direttamente ai comandi
-      - name: Run tests
-        env:
-          APP_KEY: ${{ secrets.APP_KEY }}
-          HOST: ${{ vars.HOST }}
-          LOG_LEVEL: ${{ vars.LOG_LEVEL }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ vars.DB_PORT }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_DATABASE: ${{ secrets.DB_DATABASE }}
-          SESSION_DRIVER: ${{ vars.SESSION_DRIVER }}
-        run: npm run test
-
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F9B788E88FC64FF4AF03EDA652B13F8C }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_17CDFD8DD27345BC99F0E9B1AB8B0C15 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_44434F4649B44CD6B318330143E7219C }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
