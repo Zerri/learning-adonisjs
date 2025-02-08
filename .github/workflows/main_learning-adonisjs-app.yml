@@ -57,7 +57,13 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      # 📌 AGGIUNGO LE VARIABILI D'AMBIENTE PRIMA DEL DEPLOY
+      # 📌 Debug: Controlla se il file .env viene creato correttamente
+      - name: Check .env file
+        run: |
+          ls -la
+          cat .env || echo ".env file is missing!"
+
+      # 📌 Set environment variables in .env
       - name: Set environment variables
         run: |
           echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
@@ -70,9 +76,23 @@ jobs:
           echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
           echo "SESSION_DRIVER=${{ vars.SESSION_DRIVER }}" >> .env
 
-      # 📌 DEBUG: Verifica che le variabili siano state inserite correttamente
+      # 📌 Debug: Verifica che le variabili siano state inserite correttamente
       - name: Debug environment variables
         run: cat .env
+
+      # 📌 Passa le variabili d'ambiente direttamente ai comandi
+      - name: Run tests
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          HOST: ${{ vars.HOST }}
+          LOG_LEVEL: ${{ vars.LOG_LEVEL }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ vars.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          SESSION_DRIVER: ${{ vars.SESSION_DRIVER }}
+        run: npm run test
 
       - name: Login to Azure
         uses: azure/login@v2
