@@ -36,13 +36,6 @@ new Ignitor(APP_ROOT, { importer: IMPORTER })
     })
     app.listen('SIGTERM', () => app.terminate())
     app.listenIf(app.managedByPm2, 'SIGINT', () => app.terminate())
-
-     // Imposta la porta e l'host per Azure
-     const port = process.env.PORT || 8080
-     app.config.set('http.server', {
-       host: '0.0.0.0',
-       port,
-     })
   })
   .httpServer()
   .start()
